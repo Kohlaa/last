@@ -69,6 +69,22 @@ class CallWidget extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height:20),
+                GestureDetector(
+                  onTap: () async {
+                    final Uri url = Uri(scheme: 'mailto', path: "mohamed@gmail.com");
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url);
+                    } else {
+                      debugPrint('can not launch');
+                    }
+                  },
+                  child: const Icon(
+                    Icons.email,
+                    color: Color.fromRGBO(0, 155, 155, 1.0),
+                    size: 100,
+                  ),
+                ),
               ],
             ),
           ),

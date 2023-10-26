@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:chat/constants/transitions.dart';
 import 'package:chat/model/my_user.dart';
+import 'package:chat/network/local/cache_helper.dart';
 import 'package:chat/provider/user_provider.dart';
-import 'package:chat/ui/home/home_screen.dart';
 import 'package:chat/ui/login/login_navigator.dart';
 import 'package:chat/ui/login/login_view_model.dart';
 import 'package:chat/ui/register/register_screen.dart';
@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
   var formkey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String type = '';
   LoginViewModel viewModel = LoginViewModel();
 
   @override
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
                       },
                       validator: (text) {
                         bool emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(text!);
                         if (text == null || text.trim().isEmpty) {
                           return 'Please enter email';
@@ -91,6 +92,18 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
                         }
                         if (text.length < 6) {
                           return 'Password must be at least 6 chars.';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: 'type'),
+                      onChanged: (text) {
+                        type = text;
+                      },
+                      validator: (text) {
+                        if (text == null || text.trim().isEmpty) {
+                          return 'Please enter your type (doctor / patient)';
                         }
                         return null;
                       },
@@ -121,6 +134,8 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
 
   void validateForm() {
     if (formkey.currentState?.validate() == true) {
+      CacheHelper.saveData(key: 'email', value: email);
+      CacheHelper.saveData(key: 'type', value: type);
       viewModel.loginFirebaseAuth(email, password);
     }
   }

@@ -12,6 +12,7 @@ import 'package:chat/utils.dart' as Utils;
 import 'package:provider/provider.dart';
 
 import '../../constants/transitions.dart';
+import '../../network/local/cache_helper.dart';
 import '../../view/bottom_nav/bottom_nav_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -32,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen>
   String email = '';
 
   String password = '';
+  String type = '';
 
   var formKey = GlobalKey<FormState>();
   RegisterViewModel viewModel = RegisterViewModel();
@@ -160,10 +162,9 @@ class _RegisterScreenState extends State<RegisterScreen>
                         onChanged: (text) {
                           email = text;
                         },
-
                         validator: (text) {
                           bool emailValid = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(text!);
                           if (text == null || text.trim().isEmpty) {
                             return 'Please enter email';
@@ -176,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                       ),
                       TextFormField(
                         decoration:
-                            const InputDecoration(labelText: 'Password'),
+                        const InputDecoration(labelText: 'Password'),
                         onChanged: (text) {
                           password = text;
                         },
@@ -190,14 +191,27 @@ class _RegisterScreenState extends State<RegisterScreen>
                           return null;
                         },
                       ),
+                      TextFormField(
+                        decoration: const InputDecoration(labelText: 'type'),
+                        onChanged: (text) {
+                          type = text;
+                        },
+                        validator: (text) {
+                          if (text == null || text.trim().isEmpty) {
+                            return 'Please enter your type (doctor / patient)';
+                          }
+                          return null;
+                        },
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
                       ElevatedButton(
-                          onPressed: () {
-                            validateForm();
-                          },
-                          child: const Text('Create Account'))
+                        onPressed: () {
+                          validateForm();
+                        },
+                        child: const Text('Create Account'),
+                      )
                     ],
                   ),
                 ),
@@ -211,6 +225,9 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   Future<void> validateForm() async {
     if (formKey.currentState?.validate() == true) {
+      CacheHelper.saveData(key: 'email', value: email);
+      CacheHelper.saveData(key: 'name', value: firstName + " " + lastName);
+      CacheHelper.saveData(key: 'type', value: type);
       viewModel.registerFirebaseAuth(
           email, password, firstName, lastName, userName);
     }
@@ -242,7 +259,8 @@ class _RegisterScreenState extends State<RegisterScreen>
     userProvider.user = user;
     // TODO: implement navigateToHome
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(CustomPageRoute(child: const AppLayout()));
+      Navigator.of(context)
+          .pushReplacement(CustomPageRoute(child: const AppLayout()));
     });
   }
 }
