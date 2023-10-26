@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
   var formkey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String name = '';
   String type = '';
   LoginViewModel viewModel = LoginViewModel();
 
@@ -77,6 +78,19 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
                         }
                         if (!emailValid) {
                           return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: 'Name'),
+                      onChanged: (text) {
+                        name = text;
+                      },
+                      validator: (text) {
+
+                        if (text == null || text.trim().isEmpty) {
+                          return 'Please enter name';
                         }
                         return null;
                       },
@@ -136,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
     if (formkey.currentState?.validate() == true) {
       CacheHelper.saveData(key: 'email', value: email);
       CacheHelper.saveData(key: 'type', value: type);
+      CacheHelper.saveData(key: 'name', value: name);
       viewModel.loginFirebaseAuth(email, password);
     }
   }

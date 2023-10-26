@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:chat/utils.dart' as Utils;
 import 'package:provider/provider.dart';
 
+import '../../constants/components.dart';
 import '../../constants/transitions.dart';
 import '../../network/local/cache_helper.dart';
 import '../../view/bottom_nav/bottom_nav_screen.dart';
@@ -202,6 +203,17 @@ class _RegisterScreenState extends State<RegisterScreen>
                           }
                           return null;
                         },
+                      ),
+                      TFF(
+                        action: TextInputAction.send,
+                        type: TextInputType.text,
+                        isPrefix: false,
+                        underlineBorder: true,
+                        label: "Disease",
+                        hint: "enter your disease if you are a patient",
+                        isEnabledBorder: true,
+                        borderColor: Colors.grey,
+                        labelColor: Colors.grey,
                       ),
                       const SizedBox(
                         height: 15,

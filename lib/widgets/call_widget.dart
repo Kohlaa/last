@@ -29,7 +29,7 @@ class CallWidget extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        final Uri url = Uri(scheme: 'tel', path: "01112870010");
+                        final Uri url = Uri(scheme: 'tel', path: "01141560783");
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
                         } else {
@@ -72,7 +72,7 @@ class CallWidget extends StatelessWidget {
                 const SizedBox(height:20),
                 GestureDetector(
                   onTap: () async {
-                    final Uri url = Uri(scheme: 'mailto', path: "mohamed@gmail.com");
+                    final Uri url = Uri(scheme: 'mailto', path: "aya_n91486@cic-cairo.com");
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url);
                     } else {
@@ -95,7 +95,7 @@ class CallWidget extends StatelessWidget {
 }
 
 void _launchWhatsApp() async {
-  String url = "whatsapp://send?phone=+201112870010&text=help me%2C%20please!";
+  String url = "whatsapp://send?phone=+201141560783&text=help me%2C%20please!";
   if (await canLaunch(url)) {
     await launch(url);
   } else {

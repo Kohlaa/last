@@ -189,12 +189,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Mohamed Elabd',
+                                  CacheHelper.getData(key: 'name') ??
+                                      'Aya Alnemer',
                                   style: mainTextStyle(context),
                                 ),
                                 const Spacer(),
                                 Text(
-                                  'doctor',
+                                  CacheHelper.getData(key: 'type') ?? 'doctor',
                                   style: mainTextStyle(context,
                                       color: defaultColor),
                                 ),
@@ -202,18 +203,25 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              'Mohamed_elabd@gmail.com',
+                              CacheHelper.getData(key: 'email') ??
+                                  'aya@gmail.com',
                               style: mainTextStyle(context),
                             ),
                             const SizedBox(height: 20),
-                            Text(
-                              '01112870010',
-                              style: mainTextStyle(context),
-                            ),
                           ],
                         ),
                       ),
                     ),
+                    const SizedBox(height: 30),
+                    // Text(CacheHelper.getData(key: 'type')),
+                    // CacheHelper.getData(key: 'type')=='patient'?TFF(
+                    //   action: TextInputAction.send,
+                    //   type: TextInputType.text,
+                    //   isPrefix: false,
+                    //   underlineBorder: false,
+                    //   label: "Disease",
+                    //   hint: "enter your disease",
+                    // ):const SizedBox.shrink(),
                     const SizedBox(height: 50),
                     ElevatedButton(
                       onPressed: () {
@@ -226,8 +234,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: defaultColor,
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
