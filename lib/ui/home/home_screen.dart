@@ -1,11 +1,15 @@
+import 'package:chat/constants/components.dart';
+import 'package:chat/constants/transitions.dart';
 import 'package:chat/database/database_utils.dart';
 import 'package:chat/ui/add_room/add_room.dart';
 import 'package:chat/ui/add_room/room_widget.dart';
 import 'package:chat/ui/home/home_navigator.dart';
 import 'package:chat/ui/home/home_view_model.dart';
+import 'package:chat/ui/home/review_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../constants/colors.dart';
 import '../../model/room.dart';
 
 class HomeScreen2 extends StatefulWidget {
@@ -161,105 +165,61 @@ class HomeScreenContent extends StatelessWidget {
   // Sample data for doctors
   final List<Doctor> doctors = [
     Doctor(
-        name: 'Dr. John Doe',
-        rate: 4.5,
-        address: '123 Main St, City',
-        imageUrl: 'doctor1.jpg'),
+      name: 'Dr. John Doe',
+      rate: 4.5,
+      address: '123 Main St, City',
+      imageUrl: 'assets/images/doctor1.jpg',
+      specialization: 'Audiologist',
+    ),
     Doctor(
-        name: 'Dr. Jane Smith',
-        rate: 4.8,
-        address: '456 Elm St, Town',
-        imageUrl: 'doctor2.jpg'),
+      name: 'Dr. Jane Smith',
+      rate: 4.8,
+      address: '456 Elm St, Town',
+      imageUrl: 'assets/images/doctor2.jpg',
+      specialization: 'Allergist',
+    ),
     Doctor(
-        name: 'Dr. Sarah Johnson',
-        rate: 4.3,
-        address: '789 Oak St, Village',
-        imageUrl: 'doctor3.jpg'),
+      name: 'Dr. Sarah Johnson',
+      rate: 4.3,
+      address: '789 Oak St, Village',
+      imageUrl: 'assets/images/doctor3.jpg',
+      specialization: 'Andrologists',
+    ),
     Doctor(
-        name: 'Dr. Michael Brown',
-        rate: 4.7,
-        address: '101 Pine St, Town',
-        imageUrl: 'doctor4.jpg'),
+      name: 'Dr. Michael Brown',
+      rate: 4.7,
+      address: '101 Pine St, Town',
+      imageUrl: 'assets/images/doctor4.jpg',
+      specialization: 'Anesthesiologist',
+    ),
     Doctor(
-        name: 'Dr. Emily Davis',
-        rate: 4.6,
-        address: '234 Cedar St, City',
-        imageUrl: 'doctor5.jpg'),
+      name: 'Dr. Emily Davis',
+      rate: 4.6,
+      address: '234 Cedar St, City',
+      imageUrl: 'assets/images/doctor5.jpg',
+      specialization: 'Cardiologist',
+    ),
     Doctor(
-        name: 'Dr. James Wilson',
-        rate: 4.9,
-        address: '567 Maple St, Village',
-        imageUrl: 'doctor6.jpg'),
+      name: 'Dr. James Wilson',
+      rate: 4.9,
+      address: '567 Maple St, Village',
+      imageUrl: 'assets/images/doctor6.jpg',
+      specialization: 'neurologist',
+    ),
     Doctor(
-        name: 'Dr. Olivia White',
-        rate: 4.4,
-        address: '890 Birch St, City',
-        imageUrl: 'doctor7.jpg'),
+      name: 'Dr. Olivia White',
+      rate: 4.4,
+      address: '890 Birch St, City',
+      imageUrl: 'assets/images/doctor7.jpg',
+      specialization: 'Dentist',
+    ),
     Doctor(
-        name: 'Dr. William Johnson',
-        rate: 4.2,
-        address: '432 Oak St, Town',
-        imageUrl: 'doctor8.jpg'),
-    Doctor(
-        name: 'Dr. Laura Taylor',
-        rate: 4.8,
-        address: '123 Cedar St, Village',
-        imageUrl: 'doctor9.jpg'),
-    Doctor(
-        name: 'Dr. Robert Miller',
-        rate: 4.5,
-        address: '678 Pine St, City',
-        imageUrl: 'doctor10.jpg'),
-    Doctor(
-        name: 'Dr. Jessica Lee',
-        rate: 4.7,
-        address: '345 Maple St, Town',
-        imageUrl: 'doctor11.jpg'),
-    Doctor(
-        name: 'Dr. Christopher Smith',
-        rate: 4.6,
-        address: '789 Elm St, Village',
-        imageUrl: 'doctor12.jpg'),
-    Doctor(
-        name: 'Dr. Mary Johnson',
-        rate: 4.9,
-        address: '210 Birch St, City',
-        imageUrl: 'doctor13.jpg'),
-    Doctor(
-        name: 'Dr. Daniel Davis',
-        rate: 4.3,
-        address: '543 Cedar St, Village',
-        imageUrl: 'doctor14.jpg'),
-    Doctor(
-        name: 'Dr. Sarah Wilson',
-        rate: 4.2,
-        address: '876 Pine St, City',
-        imageUrl: 'doctor15.jpg'),
-    Doctor(
-        name: 'Dr. John Brown',
-        rate: 4.4,
-        address: '321 Maple St, Town',
-        imageUrl: 'doctor16.jpg'),
-    Doctor(
-        name: 'Dr. Rachel Taylor',
-        rate: 4.8,
-        address: '654 Elm St, Village',
-        imageUrl: 'doctor17.jpg'),
-    Doctor(
-        name: 'Dr. Michael Lee',
-        rate: 4.5,
-        address: '987 Main St, City',
-        imageUrl: 'doctor18.jpg'),
-    Doctor(
-        name: 'Dr. Emma Smith',
-        rate: 4.6,
-        address: '234 Cedar St, Town',
-        imageUrl: 'doctor19.jpg'),
-    Doctor(
-        name: 'Dr. Benjamin Johnson',
-        rate: 4.7,
-        address: '567 Oak St, Village',
-        imageUrl: 'doctor20.jpg')
+      name: 'Dr. William Johnson',
+      rate: 4.2,
+      address: '432 Oak St, Town',
+      imageUrl: 'assets/images/doctor8.jpg',
+      specialization: 'Dermatologist',
+    ),
     // Add more doctor data as needed
   ];
 
@@ -280,12 +240,14 @@ class Doctor {
   final double rate;
   final String address;
   final String imageUrl;
+  final String specialization;
 
   Doctor({
     required this.name,
     required this.rate,
     required this.address,
     required this.imageUrl,
+    required this.specialization,
   });
 }
 
@@ -296,26 +258,80 @@ class DoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      margin: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: () {
-          // Navigate to HomeScreen2 when a card is tapped
-          Navigator.of(context).pushNamed(HomeScreen2.routeName);
-        },
-        child: ListTile(
-          leading: const CircleAvatar(
-              // backgroundImage: AssetImage(
-              //     doctor.imageUrl), // You need to add images to your assets
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+      child: Card(
+        elevation: 3,
+        margin: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: () {
+            // Navigate to HomeScreen2 when a card is tapped
+            Navigator.of(context).pushNamed(HomeScreen2.routeName);
+          },
+          child: ListTile(
+            leading: ClipOval(
+                child: Image(
+              height: 60,
+              width: 60,
+              fit: BoxFit.fill,
+              image: AssetImage(
+                doctor.imageUrl,
               ),
-          title: Text(doctor.name),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Rate: ${doctor.rate.toStringAsFixed(1)}'),
-              Text('Address: ${doctor.address}'),
-            ],
+            )),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                children: [
+                  Text(
+                    doctor.name,
+                    style: mainTextStyle(context),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CustomPageRoute(
+                          child: const ReviewScreen(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'Rate',
+                          style: mainTextStyle(context, color: defaultColor),
+                        ),
+                        const Icon(
+                          Icons.star_border_purple500_outlined,
+                          color: Colors.deepOrangeAccent,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Rate: ${doctor.rate.toStringAsFixed(1)}',
+                  style: midTextStyle(context, grey),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    'Address: ${doctor.address}',
+                    style: midTextStyle(context, grey),
+                  ),
+                ),
+                Text(
+                  'Specialization: ${doctor.specialization}',
+                  style: midTextStyle(context, grey),
+                ),
+              ],
+            ),
           ),
         ),
       ),

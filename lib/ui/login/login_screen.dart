@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:chat/constants/transitions.dart';
 import 'package:chat/model/my_user.dart';
 import 'package:chat/network/local/cache_helper.dart';

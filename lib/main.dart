@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'bloc/cubit.dart';
 import 'network/local/bloc_observer.dart';
 import 'network/local/cache_helper.dart';

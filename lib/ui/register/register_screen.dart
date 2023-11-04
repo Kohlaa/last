@@ -1,20 +1,16 @@
 import 'dart:async';
-
-import 'package:chat/firebase_errors.dart';
 import 'package:chat/model/my_user.dart';
 import 'package:chat/provider/user_provider.dart';
-import 'package:chat/ui/home/home_screen.dart';
 import 'package:chat/ui/register/register_navigator.dart';
 import 'package:chat/ui/register/register_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:chat/utils.dart' as Utils;
 import 'package:provider/provider.dart';
-
 import '../../constants/components.dart';
 import '../../constants/transitions.dart';
 import '../../network/local/cache_helper.dart';
 import '../../view/bottom_nav/bottom_nav_screen.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register';
@@ -29,13 +25,14 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   String lastName = '';
 
-  String userName = '';
+  dynamic userName = '';
 
-  String email = '';
+  dynamic email = '';
 
-  String password = '';
-  String type = '';
-
+  dynamic password = '';
+  dynamic type = '';
+  dynamic disease = '';
+  dynamic currentValue1;
   var formKey = GlobalKey<FormState>();
   RegisterViewModel viewModel = RegisterViewModel();
 
@@ -192,17 +189,24 @@ class _RegisterScreenState extends State<RegisterScreen>
                           return null;
                         },
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(labelText: 'type'),
-                        onChanged: (text) {
-                          type = text;
+                      DropdownButton<String>(
+                        value: currentValue1,
+                        onChanged: (newValue) {
+                          setState(() {
+                            currentValue1 = newValue!;
+                            type = newValue;
+                          });
                         },
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return 'Please enter your type (doctor / patient)';
-                          }
-                          return null;
-                        },
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'doctor',
+                            child: Text('Doctor'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'patient',
+                            child: Text('Patient'),
+                          ),
+                        ],
                       ),
                       TFF(
                         action: TextInputAction.send,
@@ -212,15 +216,29 @@ class _RegisterScreenState extends State<RegisterScreen>
                         label: "Disease",
                         hint: "enter your disease if you are a patient",
                         isEnabledBorder: true,
+                        onChanged: (value){
+                          disease = value;
+                        },
                         borderColor: Colors.grey,
                         labelColor: Colors.grey,
+                        validator: (text) {
+                          if(currentValue1 == "patient"){
+                            if (text == null || text.trim().isEmpty) {
+                              return 'Please enter last name';
+                            }
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          validateForm();
+                          if(currentValue1 == null){
+                             buildSnackBar('select your type first', context, 3);
+                          }
+                          else{validateForm();}
                         },
                         child: const Text('Create Account'),
                       )
@@ -240,6 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       CacheHelper.saveData(key: 'email', value: email);
       CacheHelper.saveData(key: 'name', value: firstName + " " + lastName);
       CacheHelper.saveData(key: 'type', value: type);
+      CacheHelper.saveData(key: 'disease', value: disease);
       viewModel.registerFirebaseAuth(
           email, password, firstName, lastName, userName);
     }

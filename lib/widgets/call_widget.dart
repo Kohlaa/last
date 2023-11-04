@@ -52,7 +52,7 @@ class CallWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     ElevatedButton(
-                      onPressed: _launchWhatsApp,
+                      onPressed: launchWhatsApp,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(0, 217, 95, 1),
                         padding: const EdgeInsets.symmetric(horizontal: 66),
@@ -94,8 +94,8 @@ class CallWidget extends StatelessWidget {
   }
 }
 
-void _launchWhatsApp() async {
-  String url = "whatsapp://send?phone=+201141560783&text=help me%2C%20please!";
+void launchWhatsApp() async {
+  String url = "whatsapp://send?phone=+201141560783&text=aya, help me%2C%20please!";
   if (await canLaunch(url)) {
     await launch(url);
   } else {

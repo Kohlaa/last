@@ -212,6 +212,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ),
                       ),
                     ),
+                    CacheHelper.getData(key: 'disease') == "patient"? const SizedBox(height: 30):Text(''),
+
+                    Text(
+                      CacheHelper.getData(key: 'disease') ??
+                          '',
+                      style: mainTextStyle(context),
+                    ),
                     const SizedBox(height: 30),
                     // Text(CacheHelper.getData(key: 'type')),
                     // CacheHelper.getData(key: 'type')=='patient'?TFF(
